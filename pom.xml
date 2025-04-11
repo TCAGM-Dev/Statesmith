@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.tcagmdev</groupId>
+    <artifactId>statesmith</artifactId>
+    <version>1.0.1</version>
+    <packaging>jar</packaging>
+
+    <name>Statesmith</name>
+    <description>Library to easily create and use state machines</description>
+    <url>https://github.com/TCAGM-Dev/Statesmith</url>
+
+    <developers>
+        <developer>
+            <name>TCAGM</name>
+            <url>https://github.com/TCAGM-Dev</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <outputDirectory>out/classes</outputDirectory>
+        <directory>out</directory>
+    </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/TCAGM-Dev/Requester.git</connection>
+        <developerConnection>scm:git:ssh://github.com:TCAGM-Dev/Requester.git</developerConnection>
+        <url>http://github.com/TCAGM-Dev/Statesmith/tree/master</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+</project>
