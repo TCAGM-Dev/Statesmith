@@ -60,6 +60,9 @@ public class StateNode<T> {
 	public void setDefaultTarget(StateNode<T> node) {
 		this.setDefaultTarget(node, null);
 	}
+	public void setDefaultTarget(Function<T, StateNode<T>> targetNodeProvider) {
+		this.setDefaultTarget(targetNodeProvider, null);
+	}
 
 	public StateNode<T> addConnection(Predicate<T> predicate, Target<T> target) {
 		this.targets.put(predicate, target);
