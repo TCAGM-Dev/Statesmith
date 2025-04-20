@@ -48,6 +48,12 @@ public class StateNode<T> {
 		this.parent = parent;
 	}
 
+	public void setDefaultTarget(Target<T> target) {
+		this.defaultTarget = target;
+	}
+	public void setDefaultTarget(Function<T, StateNode<T>> targetNodeProvider, Consumer<T> onTransition) {
+		this.defaultTarget = new Target<>(targetNodeProvider, onTransition);
+	}
 	public void setDefaultTarget(StateNode<T> node, Consumer<T> onTransition) {
 		this.defaultTarget = new Target<>(_ -> node, onTransition);
 	}
@@ -103,7 +109,10 @@ public class StateNode<T> {
 		this.timeoutTarget = target;
 		this.timeoutDuration = timeoutDuration;
 	}
+	public void setTimeoutTarget(Function<T, StateNode<T>> targetNodeProvider, Duration timeoutDuration) {
+		this.setTimeoutTarget(new Target<>(targetNodeProvider, null), timeoutDuration);
+	}
 	public void setTimeoutTarget(StateNode<T> targetNode, Duration timeoutDuration) {
-		this.setTimeoutTarget(new Target<>(_ -> targetNode, null), timeoutDuration);
+		this.setTimeoutTarget(_ -> targetNode, timeoutDuration);
 	}
 }
