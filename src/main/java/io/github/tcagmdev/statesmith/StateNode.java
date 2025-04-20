@@ -4,20 +4,22 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StateNode<T> {
 	public static class Target<T> {
-		private final StateNode<T> targetNode;
+		private final Function<T, StateNode<T>> targetNodeProvider;
 		private final Consumer<T> onTransition;
 
-		private Target(StateNode<T> node, Consumer<T> onTransition) {
-			this.targetNode = node;
+		private Target(Function<T, StateNode<T>> targetNodeProvider, Consumer<T> onTransition) {
+			this.targetNodeProvider = targetNodeProvider;
 			this.onTransition = onTransition;
 		}
 
-		public StateNode<T> getTargetNode() {
-			return this.targetNode;
+		public StateNode<T> getTargetNode(T input) {
+			if (this.targetNodeProvider == null) return null;
+			return this.targetNodeProvider.apply(input);
 		}
 		public void triggerOnTransition(T value) {
 			if (this.onTransition != null) this.onTransition.accept(value);
@@ -47,7 +49,7 @@ public class StateNode<T> {
 	}
 
 	public void setDefaultTarget(StateNode<T> node, Consumer<T> onTransition) {
-		this.defaultTarget = new Target<>(node, onTransition);
+		this.defaultTarget = new Target<>(_ -> node, onTransition);
 	}
 	public void setDefaultTarget(StateNode<T> node) {
 		this.setDefaultTarget(node, null);
@@ -57,14 +59,20 @@ public class StateNode<T> {
 		this.targets.put(predicate, target);
 		return this;
 	}
-	public StateNode<T> addConnection(Predicate<T> predicate, StateNode<T> node, Consumer<T> onTransition) {
-		return this.addConnection(predicate, new Target<>(node, onTransition));
+	public StateNode<T> addConnection(Predicate<T> predicate, StateNode<T> targetNode, Consumer<T> onTransition) {
+		return this.addConnection(predicate, new Target<>(_ -> targetNode, onTransition));
 	}
-	public StateNode<T> addConnection(Predicate<T> predicate, StateNode<T> node) {
-		return this.addConnection(predicate, node, null);
+	public StateNode<T> addConnection(Predicate<T> predicate, StateNode<T> targetNode) {
+		return this.addConnection(predicate, targetNode, null);
+	}
+	public StateNode<T> addConnection(Predicate<T> predicate, Function<T, StateNode<T>> targetNodeProvider, Consumer<T> onTransition) {
+		return this.addConnection(predicate, new Target<>(targetNodeProvider, onTransition));
+	}
+	public StateNode<T> addConnection(Predicate<T> predicate, Function<T, StateNode<T>> targetNodeProvider) {
+		return this.addConnection(predicate, targetNodeProvider, null);
 	}
 
-	public Target<T> consume(T value) {
+	protected Target<T> consume(T value) {
 		for (Map.Entry<Predicate<T>, Target<T>> connection : this.targets.entrySet()) if (connection.getKey().test(value)) {
 			return connection.getValue();
 		}
@@ -95,7 +103,7 @@ public class StateNode<T> {
 		this.timeoutTarget = target;
 		this.timeoutDuration = timeoutDuration;
 	}
-	public void setTimeoutTarget(StateNode<T> target, Duration timeoutDuration) {
-		this.setTimeoutTarget(new Target<>(target, null), timeoutDuration);
+	public void setTimeoutTarget(StateNode<T> targetNode, Duration timeoutDuration) {
+		this.setTimeoutTarget(new Target<>(_ -> targetNode, null), timeoutDuration);
 	}
 }
