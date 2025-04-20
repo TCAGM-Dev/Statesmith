@@ -56,7 +56,7 @@ public class StateMachine<T> {
 		}
 	}
 	public void setCurrentNode(StateNode.Target<T> target, T value) {
-		this.setCurrentNode(target.getTargetNode());
+		this.setCurrentNode(target.getTargetNode(value));
 		target.triggerOnTransition(value);
 	}
 	public void setCurrentNode(StateNode<T> node) {
