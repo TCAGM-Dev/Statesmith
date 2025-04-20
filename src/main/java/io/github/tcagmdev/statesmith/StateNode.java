@@ -72,7 +72,7 @@ public class StateNode<T> {
 		return this.addConnection(predicate, targetNodeProvider, null);
 	}
 
-	public Target<T> consume(T value) {
+	protected Target<T> consume(T value) {
 		for (Map.Entry<Predicate<T>, Target<T>> connection : this.targets.entrySet()) if (connection.getKey().test(value)) {
 			return connection.getValue();
 		}
