@@ -63,9 +63,9 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>github</id>
+            <name>GitHub TCAGM-Dev Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TCAGM-Dev/Statesmith</url>
         </repository>
     </distributionManagement>
 </project>
